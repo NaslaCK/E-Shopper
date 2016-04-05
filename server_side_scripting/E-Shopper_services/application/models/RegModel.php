@@ -185,6 +185,7 @@ class RegModel extends CI_Model {
 	function selectcat()
 	{
 		$query=$this->db->query('select * from tbl_category');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -319,6 +320,7 @@ class RegModel extends CI_Model {
 	function productselectcat()
 	{
 		$query=$this->db->query('select * from tbl_category');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -345,6 +347,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_sub_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -382,6 +385,7 @@ class RegModel extends CI_Model {
 	function viewcategory()
 	{
 		$query=$this->db->query('select * from tbl_category');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -399,6 +403,7 @@ class RegModel extends CI_Model {
 	function viewsub()
 	{
 		$query=$this->db->query('select * from tbl_sub_category');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -425,6 +430,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_sub_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -467,6 +473,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_sub_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -507,8 +514,10 @@ class RegModel extends CI_Model {
                $data['fk_int_sub_id']=$this->input->get_post('name');
 				$this->db->select('*');
 				$this->db->from('tbl_product');
+				$this->db->join('tbl_stock','pk_int_product_id=fk_int_product_id');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -551,6 +560,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -675,6 +685,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_sub_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -800,6 +811,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_product');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -937,6 +949,7 @@ class RegModel extends CI_Model {
 	function viewcustomer()
 	{
 		$query=$this->db->query('select * from tbl_registration where vchr_status="active"');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -952,6 +965,7 @@ class RegModel extends CI_Model {
 
 	function viewcus(){
 		$query=$this->db->query('select * from tbl_registration');
+		return $query->result();
 		if($query->result())
 		{
 			$response['data']= $query->result();
@@ -1000,25 +1014,30 @@ class RegModel extends CI_Model {
 		}
 	}
 
+
+
+
 	function customercat()
 	{
 		$this->db->select('*');
 		$this->db->from('tbl_category');
 		$query=$this->db->get();
 		return $query->result();
-		// if($query->result())
-		// {
-		// 	$response['data']= $query->result();
-		// 	$response['error_code']="200";
-		// 	echo json_encode($response);
-  //       }
-  //       else
-  //       {
-  //         	$response['data']="error";
-		// 	$response['error_code']="500";	
-  //       }
-		
 		// print_r('$_query');
+
+		if($query->result())
+		{
+			$response['data']= $query->result();
+			$response['error_code']="200";
+			echo json_encode($response);
+        }
+        else
+        {
+          	$response['data']="error";
+			$response['error_code']="500";	
+        }
+		
+		
 
 		
 	}
@@ -1037,6 +1056,7 @@ class RegModel extends CI_Model {
 				$this->db->from('tbl_sub_category');
 				$where=$this->db->where($data);
 				$query=$this->db->get();
+				return $query->result();
 	       		if($query->result())
 				{
 					$response['data'] =$query->result();
@@ -1068,13 +1088,45 @@ class RegModel extends CI_Model {
 
 	function prodpic()
 	{
-		$data['fk_int_sub_id']=$this->input->post('name');
-		$this->db->select('*');
-		$this->db->from('tbl_stock');
-		$this->db->join('tbl_product', 'pk_int_product_id=fk_int_product_id');
-		$where=$this->db->where($data);
-		$query = $this->db->get();
-		return $query->result();
+		if(isset($_REQUEST['name']))
+		{
+			$str =$_REQUEST['name'];
+			if (preg_match('/^[0-9]+$/', $str))
+            {		
+               $data['fk_int_sub_id']=$this->input->get_post('name');
+				$this->db->select('*');
+				$this->db->from('tbl_stock');
+				$this->db->join('tbl_product', 'pk_int_product_id=fk_int_product_id');
+				$where=$this->db->where($data);
+				$query=$this->db->get();
+				return $query->result();
+	       		if($query->result())
+				{
+					$response['data'] =$query->result();
+					$response['error_code']="200 success";
+				 	echo  json_encode($response);
+				}
+				else
+				{
+					$response['data']="No matching data found";
+					$response['error_code']="500";
+				 	echo json_encode($response);
+				}
+			}	
+			else
+			{
+				$response['data'] ="Invalid input format";
+				$response['error_code']="500 error";
+				echo json_encode($response);
+
+			}
+   		}
+		else 
+		{
+			$response['data']="no input provided";
+			$response['error_code']="500 ";
+			echo json_encode($response);
+		}
 		
 		
 	}
@@ -1083,26 +1135,62 @@ class RegModel extends CI_Model {
 	{
 		$dd=$this->session->userdata();
 		$data=array(
-			'fk_int_product_id'=>$this->input->post('name'),
-			'int_quantity'=>$this->input->post('quantity'),
-			'int_total_amount'=>$this->input->post('price'),
+			'fk_int_product_id'=>$this->input->get_post('name'),
+			'int_quantity'=>$this->input->get_post('quantity'),
+			'int_total_amount'=>$this->input->get_post('price'),
 			'fk_int_login_id'=>$dd['id']
 			);
 		
-	$result=	$this->db->query('call csp_insert_purchase(?,?,?,?)',$data);
+	$result=$this->db->query('call csp_insert_purchase(?,?,?,?)',$data);
 	
 	}
 
 	function purchasedet()
 	{
-		$data['fk_int_login_id']=$this->input->post('name');
-		$this->db->select('*');
-		$this->db->from('tbl_purchase');
-		$this->db->join('tbl_product', 'fk_int_product_id=pk_int_product_id');
-		$where=$this->db->where($data);
-		$query = $this->db->get();
-		return $query->result();
+		if(isset($_REQUEST['name']))
+		{
+			$str =$_REQUEST['name'];
+			if (preg_match('/^[0-9]+$/', $str))
+            {		
+               $data['fk_int_login_id']=$this->input->get_post('name');
+				$this->db->select('*');
+				$this->db->from('tbl_purchase');
+				$this->db->join('tbl_product', 'fk_int_product_id=pk_int_product_id');
+				$where=$this->db->where($data);
+				$query=$this->db->get();
+				return $query->result();
+	       		if($query->result())
+				{
+					$response['data'] =$query->result();
+					$response['error_code']="200 success";
+				 	echo  json_encode($response);
+				}
+				else
+				{
+					$response['data']="No matching data found";
+					$response['error_code']="500";
+				 	echo json_encode($response);
+				}
+			}	
+			else
+			{
+				$response['data'] ="Invalid input format";
+				$response['error_code']="500 error";
+				echo json_encode($response);
+
+			}
+   		}
+		else 
+		{
+			$response['data']="no input provided";
+			$response['error_code']="500 ";
+			echo json_encode($response);
+		}
 	} 
+
+
+	
+
 
 
 	function showallprods(){
@@ -1110,18 +1198,69 @@ class RegModel extends CI_Model {
 		$this->db->from('tbl_product');
 		$query = $this->db->get();
 		return $query->result();
+		if($query->result())
+		{
+			$response['data']= $query->result();
+			$response['error_code']="200";
+			echo json_encode($response);
+        }
+        else
+        {
+          	$response['data']="error";
+			$response['error_code']="500";	
+        }
 	}
 
 	function viewproductdesc()
 {
-		$data['pk_int_product_id']=$this->input->post('name');
-		$this->db->select('*');
-		$this->db->from('tbl_product');
-		$this->db->join('tbl_stock','pk_int_product_id=fk_int_product_id');
-		$where=$this->db->where($data);
-		$query = $this->db->get();
-		return $query->result();
+		// $data['pk_int_product_id']=$this->input->post('name');
+		// $this->db->select('*');
+		// $this->db->from('tbl_product');
+		// $this->db->join('tbl_stock','pk_int_product_id=fk_int_product_id');
+		// $where=$this->db->where($data);
+		// $query = $this->db->get();
+		// return $query->result();
 		//print_r($query);
+
+		if(isset($_REQUEST['name']))
+		{
+			$str =$_REQUEST['name'];
+			if (preg_match('/^[0-9]+$/', $str))
+            {		
+               $data['pk_int_product_id']=$this->input->get_post('name');
+				$this->db->select('*');
+				$this->db->from('tbl_product');
+				$this->db->join('tbl_stock','pk_int_product_id=fk_int_product_id');
+				$where=$this->db->where($data);
+				$query=$this->db->get();
+				return $query->result();
+	       		if($query->result())
+				{
+					$response['data'] =$query->result();
+					$response['error_code']="200 success";
+				 	echo  json_encode($response);
+				}
+				else
+				{
+					$response['data']="No matching data found";
+					$response['error_code']="500";
+				 	echo json_encode($response);
+				}
+			}	
+			else
+			{
+				$response['data'] ="Invalid input format";
+				$response['error_code']="500 error";
+				echo json_encode($response);
+
+			}
+   		}
+		else 
+		{
+			$response['data']="no input provided";
+			$response['error_code']="500 ";
+			echo json_encode($response);
+		}
 		
 }
 

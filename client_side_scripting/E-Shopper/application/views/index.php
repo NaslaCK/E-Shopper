@@ -80,7 +80,7 @@ $.ajax({
 function customersubcategory(vall)
 
 {
-$('#'+vall+'').load('blank');
+$('#'+vall+'').empty();
 	$.ajax({
 		'type' :"POST",
 		'url' :"http://localhost/E-Shopper_services/index.php/welcome/showcustsubs",

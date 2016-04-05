@@ -160,7 +160,7 @@ class Welcome extends CI_Controller {
 		{
 		$this->load->model('RegModel');
 			$data['category']=$this->RegModel->productselectcat();
-			// $data['subcategory']=$this->RegModel->productselectcat();
+			//$data['subcategory']=$this->RegModel->productselectcat();
 			$this->load->view('addproducts',$data);
 		}
 		else
@@ -471,7 +471,7 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->model('RegModel');
 		$data['picss']=$this->RegModel->prodpic($_POST);
-		//$this->load->view('picsencode',$data);
+		$this->load->view('picsencode',$data);
 	}
 
 	public function detailofproducts()

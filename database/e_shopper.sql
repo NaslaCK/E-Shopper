@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2016 at 10:17 AM
+-- Generation Time: Apr 05, 2016 at 08:08 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `tbl_category` (
   `pk_int_cat_id` int(11) NOT NULL AUTO_INCREMENT,
   `vchr_cat_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`pk_int_cat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `tbl_category`
@@ -194,7 +194,7 @@ INSERT INTO `tbl_login` (`pk_int_login_id`, `vchr_email`, `vchr_password`, `fk_i
 (3, 'asr@gmail.com', 'arnav', 2),
 (4, 'kkg@gmail.com', 'khushi', 2),
 (5, 'sj@yahoo.com', 'rs', 2),
-(6, 'sd@gg.com', 'abcdef', 2);
+(6, 'aswathy@gmail.com', 'aswathy', 2);
 
 -- --------------------------------------------------------
 
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `tbl_product` (
   `vchr_product_image` varchar(20) DEFAULT NULL,
   `vchr_product_side_view` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`pk_int_product_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `tbl_product`
@@ -227,7 +227,8 @@ INSERT INTO `tbl_product` (`pk_int_product_id`, `vchr_product_name`, `int_price`
 (6, 'Prada PR13SS', 16500, 'A frame which is medium havana and has a lens which is graduated grey. ', 5, 16000, 'pradaPR13SS.jpg', 'abc.jpg'),
 (7, 'Prada BG110', 8500, 'Elegant violet leather bag with golden works.', 6, 9000, 'pradaBG110.jpg', 'abc.jpg'),
 (8, 'Prada BG111', 5000, 'Elegant brown leather bag.', 6, 5000, 'PradaBG111.jpg', 'abc.jpg'),
-(9, 'NIKE BP100', 2500, 'Sports backpack.', 8, 2300, NULL, 'abc.jpg');
+(9, 'NIKE BP100', 2500, 'Sports backpack.', 8, 2300, 'NikeBP100.jpeg', 'abc.jpg'),
+(10, 'Nike Air Zoom', 6000, 'Grey mesh sports shoes.', 1, 5600, 'nikeshoe100.jpeg', 'abc.jpg');
 
 -- --------------------------------------------------------
 
@@ -243,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `tbl_purchase` (
   `dat_date` date DEFAULT NULL,
   `fk_int_login_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pk_int_purchase_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `tbl_purchase`
@@ -252,7 +253,9 @@ CREATE TABLE IF NOT EXISTS `tbl_purchase` (
 INSERT INTO `tbl_purchase` (`pk_int_purchase_id`, `fk_int_product_id`, `int_quantity`, `int_total_amount`, `dat_date`, `fk_int_login_id`) VALUES
 (1, 6, 1, 16000, '2016-03-18', 2),
 (2, 3, 1, 13000, '2016-03-18', 3),
-(3, 5, 1, 15000, '2016-03-28', 2);
+(3, 5, 1, 15000, '2016-03-28', 2),
+(4, 1, 1, 10000, '2016-04-05', 2),
+(5, 9, 1, 2300, '2016-04-05', 6);
 
 -- --------------------------------------------------------
 
@@ -292,22 +295,23 @@ CREATE TABLE IF NOT EXISTS `tbl_stock` (
   `fk_int_product_id` int(11) DEFAULT NULL,
   `int_quantity` int(11) DEFAULT NULL,
   PRIMARY KEY (`pk_int_stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `tbl_stock`
 --
 
 INSERT INTO `tbl_stock` (`pk_int_stock_id`, `fk_int_product_id`, `int_quantity`) VALUES
-(1, 1, 7),
-(2, 2, 4),
-(3, 3, 5),
-(4, 4, 7),
-(5, 5, 12),
-(6, 6, 5),
-(7, 7, 4),
-(8, 8, 5),
-(9, 9, 10);
+(1, 1, 5),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 5),
+(5, 5, 10),
+(6, 6, 3),
+(7, 7, 2),
+(8, 8, 3),
+(9, 9, 8),
+(10, 10, 10);
 
 -- --------------------------------------------------------
 
@@ -320,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `tbl_sub_category` (
   `vchr_sub_name` varchar(20) DEFAULT NULL,
   `fk_int_cat_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pk_int_sub_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `tbl_sub_category`
@@ -334,7 +338,8 @@ INSERT INTO `tbl_sub_category` (`pk_int_sub_id`, `vchr_sub_name`, `fk_int_cat_id
 (5, 'Prada', 3),
 (6, 'Prada', 2),
 (7, 'Dolce & Gabbana', 2),
-(8, 'NIKE', 4);
+(8, 'NIKE', 4),
+(9, 'DELL', 4);
 
 -- --------------------------------------------------------
 
