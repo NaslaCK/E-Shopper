@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2016 at 08:08 AM
+-- Generation Time: Apr 20, 2016 at 07:02 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -71,15 +71,17 @@ rollback;
 end if;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `csp_insert_purchase`(in fk_int_product_id int(11),in quantity int(11),in int_total_amount int(11),in fk_int_login_id int(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `csp_insert_purchase`(IN `fk_int_product_id` INT(11), IN `quantity` INT(11), IN `int_total_amount` INT(11), IN `fk_int_login_id` INT(11))
 begin
 declare done int default 0;
+declare amt int;
 declare dat_date date default CURDATE();
 declare exit handler for sqlexception,sqlwarning set done=1;
 
 start transaction;
 set dat_date=CURDATE();
-insert into tbl_purchase(fk_int_product_id,int_quantity,int_total_amount,dat_date,fk_int_login_id) values (fk_int_product_id,quantity,int_total_amount,dat_date,fk_int_login_id);
+set amt=int_total_amount*quantity;
+insert into tbl_purchase(fk_int_product_id,int_quantity,int_total_amount,dat_date,fk_int_login_id) values (fk_int_product_id,quantity,amt,dat_date,fk_int_login_id);
 
 update tbl_stock  set int_quantity=int_quantity-quantity where fk_int_product_id=fk_int_product_id;
 if done=0 then
@@ -182,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `tbl_login` (
   `vchr_password` varchar(20) DEFAULT NULL,
   `fk_int_user_role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pk_int_login_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `tbl_login`
@@ -194,7 +196,8 @@ INSERT INTO `tbl_login` (`pk_int_login_id`, `vchr_email`, `vchr_password`, `fk_i
 (3, 'asr@gmail.com', 'arnav', 2),
 (4, 'kkg@gmail.com', 'khushi', 2),
 (5, 'sj@yahoo.com', 'rs', 2),
-(6, 'aswathy@gmail.com', 'aswathy', 2);
+(6, 'aswathy@gmail.com', 'aswathy', 2),
+(7, 'shashi@gmail.com', 'shashi', 2);
 
 -- --------------------------------------------------------
 
@@ -244,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `tbl_purchase` (
   `dat_date` date DEFAULT NULL,
   `fk_int_login_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pk_int_purchase_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `tbl_purchase`
@@ -255,7 +258,18 @@ INSERT INTO `tbl_purchase` (`pk_int_purchase_id`, `fk_int_product_id`, `int_quan
 (2, 3, 1, 13000, '2016-03-18', 3),
 (3, 5, 1, 15000, '2016-03-28', 2),
 (4, 1, 1, 10000, '2016-04-05', 2),
-(5, 9, 1, 2300, '2016-04-05', 6);
+(5, 9, 1, 2300, '2016-04-05', 6),
+(6, 2, 3, 9800, '2016-04-11', 2),
+(7, 2, 3, 9800, '2016-04-11', 2),
+(8, 2, 3, 9800, '2016-04-11', 2),
+(9, 3, 1, 13000, '2016-04-11', 2),
+(10, 1, 1, 10000, '2016-04-11', 6),
+(11, 1, 1, 10000, '2016-04-11', 6),
+(12, 3, 2, 26000, '2016-04-11', 6),
+(13, 3, 2, 26000, '2016-04-11', 6),
+(14, 1, 1, 10000, '2016-04-13', 6),
+(15, 7, 1, 9000, '2016-04-13', 2),
+(16, 7, 1, 9000, '2016-04-18', 2);
 
 -- --------------------------------------------------------
 
@@ -271,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `tbl_registration` (
   `dat_date` date DEFAULT NULL,
   `vchr_status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`pk_int_reg_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `tbl_registration`
@@ -282,7 +296,8 @@ INSERT INTO `tbl_registration` (`pk_int_reg_id`, `vchr_fname`, `vchr_lname`, `fk
 (2, 'Arnav Sing', 'Raizada', 3, '2016-02-24', 'Active'),
 (3, 'Khushi Sing', 'Raizada', 4, '2016-02-24', 'Inactive'),
 (4, 'shyam', 'Jha', 5, '2016-02-24', 'Inactive'),
-(5, 'Aswathy', 'S Das', 6, '2016-03-29', 'Active');
+(5, 'Aswathy', 'S Das', 6, '2016-03-29', 'Active'),
+(6, 'Shashi', 'Gupta', 7, '2016-04-15', 'Active');
 
 -- --------------------------------------------------------
 
@@ -302,16 +317,16 @@ CREATE TABLE IF NOT EXISTS `tbl_stock` (
 --
 
 INSERT INTO `tbl_stock` (`pk_int_stock_id`, `fk_int_product_id`, `int_quantity`) VALUES
-(1, 1, 5),
-(2, 2, 2),
-(3, 3, 3),
+(1, 1, 4),
+(2, 2, 1),
+(3, 3, 7),
 (4, 4, 5),
-(5, 5, 10),
-(6, 6, 3),
-(7, 7, 2),
-(8, 8, 3),
-(9, 9, 8),
-(10, 10, 10);
+(5, 5, 6),
+(6, 6, 4),
+(7, 7, 8),
+(8, 8, 9),
+(9, 9, 5),
+(10, 10, 8);
 
 -- --------------------------------------------------------
 

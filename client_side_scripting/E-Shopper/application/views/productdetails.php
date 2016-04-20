@@ -37,6 +37,9 @@
 		alert("sorry!Out of Stock");
 		
 	}
+	else if ((qt-qty)<1) {
+		alert("sorry!Out of Stock");
+	}
 	else{
 	$.ajax({
 		'type' :"POST",
@@ -238,13 +241,13 @@
 									<span>Rs.<label id="pc" style="color:#FE980F;"><?php echo ($price)?></label></span>
 
 									<label>Quantity:</label>
-									<input type="text" id="q" />
+									<input type="text" id="q" value="1" />
 									<button type="button" class="btn btn-fefault cart" onclick="productpurch('<?php echo ($id)?>','<?php echo ($quantity)?>')" >
 										<i class="fa fa-shopping-cart"></i>
 										Buy Now
 									</button>
 								</span>
-								<p><b>Availability:</b> In Stock</p>
+								<p><b>Availability:</b> <?php echo ($quantity)?></p>
 								<p><b>Description:</b> <?php echo ($desc)?></p>
 								<p><b>Brand:</b> E-SHOPPER</p>
 								<a href=""><img src="<?php echo base_url();?>images/product-details/share.png" class="share img-responsive"  alt="" /></a>
